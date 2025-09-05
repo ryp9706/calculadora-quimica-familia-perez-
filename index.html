@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Calculadora Química 2.0 - Familia Pérez Salazar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #FFD700;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .button {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .button:hover {
+            background: linear-gradient(45deg, #F7931E, #FF6B35);
+            transform: scale(1.05);
+        }
+
+        .result {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .inventory-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .inventory-item.low {
+            border-left-color: #FF9800;
+        }
+
+        .inventory-item.critical {
+            border-left-color: #F44336;
+        }
+
+        .trivia-section {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .family-scores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .score-card {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .trivia-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .trivia-button:hover {
+            transform: scale(1.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+           
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 CALCULADORA QUÍMICA 2.0</h1>
+            <p><strong>Familia Pérez Salazar</strong> | Gamificación Familiar Química</p>
+            <p>💰 Arsenal Invertido: $814+ | 🏆 ROI: 2,500%+ anual</p>
+        </div>
+
+        <div class="dashboard">
+            <!-- CALCULADORA PRINCIPAL -->
+            <div class="card">
+                <h3>⚗️ Calculadora Master</h3>
+                <div class="input-group">
+                    <label>Producto:</label>
+                    <select id="product-select">
+                        <option value="detergente">Detergente Premium</option>
+                        <option value="shampoo">Shampoo Reparador</option>
+                        <option value="jabon">Jabón Antibacterial</option>
+                        <option value="suavizante">Suavizante Concentrado</option>
+                        <option value="desinfectante">Desinfectante Pino</option>
+                        <option value="limpiador">Limpiador Multiuso</option>
+                        <option value="aromatizante">Aromatizante Hogar</option>
+                        <option value="acondicionador">Acondicionador</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Cantidad a producir (L):</label>
+                    <input type="number" id="quantity" placeholder="Ej: 5" step="0.1">
+                </div>
+                <button class="button" onclick="calculateFormula()">🧮 CALCULAR FÓRMULA</button>
+                <div id="formula-result" class="result" style="display:none;"></div>
+                <button class="button" onclick="addToBatch()" style="background: linear-gradient(45deg, #2196F3, #21CBF3);">📊 AGREGAR A PRODUCCIÓN</button>
+            </div>
+
+            <!-- CONTROL INVENTARIO -->
+            <div class="card">
+                <h3>📦 Control Inventario</h3>
+                <div class="inventory-grid" id="inventory-display">
+                    <!-- Se llena dinámicamente -->
+                </div>
+                <button class="button" onclick="updateInventory()" style="background: linear-gradient(45deg, #9C27B0, #E91E63);">🔄 ACTUALIZAR STOCK</button>
+            </div>
+
+            <!-- ESTADÍSTICAS -->
+            <div class="card">
+                <h3>📈 Estadísticas Imperio</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-batches">0</div>
+                        <div>Lotes Producidos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="favorite-products">-</div>
+                        <div>Producto Favorito</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="savings">$0</div>
+                        <div>Ahorro Total</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN TRIVIA FAMILIAR -->
+        <div class="trivia-section">
+            <h2 style="text-align: center; margin-bottom: 20px;">🎮 TRIVIA QUÍMICA FAMILIAR</h2>
+           
+            <div class="family-scores">
+                <div class="score-card">
+                    <h4>👨 Papá Raúl</h4>
+                    <div class="stat-number" id="dad-score">0</div>
+                    <small>Nivel: Experto</small>
+                </div>
+                <div class="score-card">
+                    <h4>👩 Mamá</h4>
+                    <div class="stat-number" id="mom-score">0</div>
+                    <small>Nivel: Avanzado</small>
+                </div>
+                <div class="score-card">
+                    <h4>👦 Hijo</h4>
+                    <div class="stat-number" id="son-score">0</div>
+                    <small>Nivel: Intermedio</small>
+                </div>
+                <div class="score-card">
+                    <h4>👧 Hija</h4>
+                    <div class="stat-number" id="daughter-score">0</div>
+                    <small>Nivel: Básico</small>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="trivia-button" onclick="showTrivia('dad')">🎯 Pregunta Papá (10pts)</button>
+                <button class="trivia-button" onclick="showTrivia('mom')">💡 Pregunta Mamá (8pts)</button>
+                <button class="trivia-button" onclick="showTrivia('son')">📚 Pregunta Hijo (5pts)</button>
+                <button class="trivia-button" onclick="showTrivia('daughter')">🌟 Pregunta Hija (5pts)</button>
+            </div>
+
+            <div id="trivia-question-area">
+                <p style="text-align: center; font-style: italic;">¡Selecciona quién va a responder para comenzar la diversión química!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FÓRMULAS QUÍMICAS EXACTAS - PÉREZ SALAZAR EMPIRE
+        const formulas = {
+            detergente: {
+                name: "Detergente Premium Pérez Salazar",
+                baseWater: 0.70,
+                components: {
+                    "SLES 70%": 0.15,
+                    "DDBSA": 0.08,
+                    "Cocobetaine 30%": 0.04,
+                    "Diethanolamine": 0.02,
+                    "Fragancia": 0.005,
+                    "Colorante": 0.002,
+                    "Conservante": 0.003
+                },
+                cost: 1.20
+            },
+            shampoo: {
+                name: "Shampoo Reparador Premium",
+                baseWater: 0.75,
+                components: {
+                    "SLES 70%": 0.12,
+                    "Cocobetaine 30%": 0.06,
+                    "Lauramine Oxide": 0.03,
+                    "Cetrimonium Chloride": 0.02,
+                    "Glicerina": 0.015,
+                    "Fragancia": 0.003,
+                    "Conservante": 0.002
+                },
+                cost: 1.80
+            },
+            jabon: {
+                name: "Jabón Antibacterial",
+                baseWater: 0.68,
+                components: {
+                    "SLES 70%": 0.18,
+                    "Cocobetaine 30%": 0.08,
+                    "Triclosan": 0.005,
+                    "Glicerina": 0.03,
+                    "Fragancia Pine": 0.004,
+                    "Colorante": 0.001,
+                    "Conservante": 0.003
+                },
+                cost: 1.50
+            },
+            suavizante: {
+                name: "Suavizante Concentrado",
+                baseWater: 0.82,
+                components: {
+                    "Cetyl Alcohol": 0.08,
+                    "Cetrimonium Chloride": 0.06,
+                    "Glicerina": 0.025,
+                    "Fragancia": 0.008,
+                    "Colorante": 0.002,
+                    "Conservante": 0.003
+                },
+                cost: 1.00
+            },
+            desinfectante: {
+                name: "Desinfectante Pino 99%",
+                baseWater: 0.60,
+                components: {
+                    "Pine Oil 99%": 0.25,
+                    "Alcohol Isopropílico": 0.10,
+                    "SLES 70%": 0.03,
+                    "Formaldehyde 37%": 0.015,
+                    "Colorante Verde": 0.002,
+                    "Conservante": 0.003
+                },
+                cost: 2.20
+            },
+            limpiador: {
+                name: "Limpiador Multiuso",
+                baseWater: 0.78,
+                components: {
+                    "SLES 70%": 0.10,
+                    "DDBSA": 0.05,
+                    "Alcohol Isopropílico": 0.04,
+                    "EDTA": 0.008,
+                    "Fragancia": 0.005,
+                    "Colorante": 0.002,
+                    "Conservante": 0.005
+                },
+                cost: 1.30
+            },
+            aromatizante: {
+                name: "Aromatizante Hogar Premium",
+                baseWater: 0.70,
+                components: {
+                    "Alcohol Isopropílico": 0.20,
+                    "Polysorbate 20": 0.03,
+                    "Fragancia Premium": 0.06,
+                    "Glicerina": 0.008,
+                    "Colorante": 0.001,
+                    "Conservante": 0.001
+                },
+                cost: 3.50
+            },
+            acondicionador: {
+                name: "Acondicionador Reparador",
+                baseWater: 0.78,
+                components: {
+                    "Cetyl Alcohol": 0.08,
+                    "Cetrimonium Chloride": 0.04,
+                    "Cocobetaine 30%": 0.05,
+                    "Glicerina": 0.025,
+                    "Aceite Esencial": 0.008,
+                    "Fragancia": 0.005,
+                    "Conservante": 0.002
+                },
+                cost: 2.00
+            }
+        };
+
+        // INVENTARIO ARSENAL QUÍMICO
+        let inventory = {
+            "SLES 70%": { stock: 25, unit: "L", min: 5, cost: 8.50 },
+            "DDBSA": { stock: 15, unit: "L", min: 3, cost: 12.00 },
+            "Cocobetaine 30%": { stock: 10, unit: "L", min: 2, cost: 15.00 },
+            "Diethanolamine": { stock: 8, unit: "L", min: 2, cost: 18.00 },
+            "Lauramine Oxide": { stock: 6, unit: "L", min: 1, cost: 20.00 },
+            "Pine Oil 99%": { stock: 12, unit: "L", min: 3, cost: 25.00 },
+            "Cetyl Alcohol": { stock: 2, unit: "lbs", min: 0.5, cost: 35.00 },
+            "Cetrimonium Chloride": { stock: 1, unit: "L", min: 0.2, cost: 45.00 },
+            "Glicerina": { stock: 8, unit: "L", min: 1, cost: 12.00 },
+            "Fragancia Premium": { stock: 5, unit: "L", min: 1, cost: 40.00 },
+            "Alcohol Isopropílico": { stock: 20, unit: "L", min: 5, cost: 6.00 }
+        };
+
+        let productionHistory = [];
+        let familyScores = { dad: 0, mom: 0, son: 0, daughter: 0 };
+
+        // PREGUNTAS TRIVIA POR NIVEL
+        const triviaQuestions = {
+            dad: [
+                {
+                    question: "¿Cuál es la función principal del DDBSA en detergentes?",
+                    options: ["Espumante", "Surfactante aniónico", "Conservante", "Colorante"],
+                    correct: 1,
+                    explanation: "DDBSA es un surfactante aniónico que mejora el poder de limpieza y estabilidad del detergente."
+                },
+                {
+                    question: "¿Por qué usamos Cetrimonium Chloride en shampoo?",
+                    options: ["Espesar", "Acondicionar", "Conservar", "Perfumar"],
+                    correct: 1,
+                    explanation: "Es un surfactante catiónico que proporciona propiedades acondicionadoras al cabello."
+                },
+                {
+                    question: "¿Cuál es la concentración ideal de Pine Oil para desinfección?",
+                    options: ["10-15%", "25-30%", "5-8%", "40-50%"],
+                    correct: 1,
+                    explanation: "25-30% es la concentración óptima para máxima eficacia desinfectante con Pine Oil 99%."
+                }
+            ],
+            mom: [
+                {
+                    question: "¿Qué hace la Glicerina en los productos de limpieza?",
+                    options: ["Humecta y suaviza", "Hace espuma", "Conserva", "Da color"],
+                    correct: 0,
+                    explanation: "La Glicerina es un humectante que suaviza la piel y evita que se reseque."
+                },
+                {
+                    question: "¿Por qué es importante el EDTA en limpiadores?",
+                    options: ["Da fragancia", "Secuestra metales", "Hace espuma", "Conserva"],
+                    correct: 1,
+                    explanation: "EDTA secuestra iones metálicos que pueden reducir la eficacia de otros ingredientes."
+                },
+                {
+                    question: "¿Cuál es la ventaja del Cocobetaine?",
+                    options: ["Es barato", "Suave con la piel", "Da mucha espuma", "Es colorante"],
+                    correct: 1,
+                    explanation: "Cocobetaine es un surfactante anfotérico muy suave, ideal para productos que tocan la piel."
+                }
+            ],
+            son: [
+                {
+                    question: "¿Qué significa 'surfactante'?",
+                    options: ["Que hace burbujas", "Que limpia grasa", "Que huele bien", "Que da color"],
+                    correct: 1,
+                    explanation: "Los surfactantes reducen la tensión superficial y permiten que el agua limpie la grasa."
+                },
+                {
+                    question: "¿Para qué sirve el conservante en los productos?",
+                    options: ["Para que duren más", "Para que hagan espuma", "Para el color", "Para el olor"],
+                    correct: 0,
+                    explanation: "Los conservantes evitan el crecimiento de bacterias y hongos, haciendo que el producto dure más."
+                },
+                {
+                    question: "¿Por qué algunos jabones son antibacteriales?",
+                    options: ["Por el color", "Por ingredientes especiales", "Por la espuma", "Por el olor"],
+                    correct: 1,
+                    explanation: "Contienen ingredientes como Triclosan que eliminan bacterias dañinas."
+                }
+            ],
+            daughter: [
+                {
+                    question: "¿De qué color es el Pine Oil?",
+                    options: ["Azul", "Verde", "Rosa", "Amarillo"],
+                    correct: 1,
+                    explanation: "El Pine Oil es naturalmente verde, como los pinos de donde proviene."
+                },
+                {
+                    question: "¿Qué hace que el shampoo haga espuma?",
+                    options: ["El agua", "Ingredientes especiales", "El frasco", "El calor"],
+                    correct: 1,
+                    explanation: "Los surfactantes como SLES crean la espuma que ayuda a limpiar el cabello."
+                },
+                {
+                    question: "¿Por qué huelen bien nuestros productos?",
+                    options: ["Por magia", "Por las fragancias", "Por el agua", "Por el color"],
+                    correct: 1,
+                    explanation: "Agregamos fragancias especiales que hacen que nuestros productos huelan delicioso."
+                }
+            ]
+        };
+
+        // FUNCIONES PRINCIPALES
+        function calculateFormula() {
+            const product = document.getElementById('product-select').value;
+            const quantity = parseFloat(document.getElementById('quantity').value);
+           
+            if (!quantity || quantity <= 0) {
+                alert('Por favor ingresa una cantidad válida');
+                return;
+            }
+
+            const formula = formulas[product];
+            const result = document.getElementById('formula-result');
+           
+            let html = `<h4>${formula.name}</h4>`;
+            html += `<p><strong>Cantidad total: ${quantity}L</strong></p>`;
+            html += `<hr style="margin: 10px 0; opacity: 0.3;">`;
+           
+            // Agua base
+            const waterAmount = (quantity * formula.baseWater).toFixed(3);
+            html += `<p>💧 Agua: ${waterAmount}L</p>`;
+           
+            // Componentes
+            for (const [component, percentage] of Object.entries(formula.components)) {
+                const amount = (quantity * percentage).toFixed(3);
+                const unit = component.includes('Alcohol') ? 'L' : (component.includes('Cetyl') ? 'g' : 'L');
+                html += `<p>🧪 ${component}: ${amount}${unit}</p>`;
+            }
+           
+            // Costo
+            const totalCost = (quantity * formula.cost).toFixed(2);
+            const savingsVsStore = (quantity * formula.cost * 2.5).toFixed(2);
+            html += `<hr style="margin: 10px 0; opacity: 0.3;">`;
+            html += `<p><strong>💰 Costo producción: $${totalCost}</strong></p>`;
+            html += `<p><strong>💚 Ahorro vs tienda: $${savingsVsStore}</strong></p>`;
+           
+            result.innerHTML = html;
+            result.style.display = 'block';
+        }
+
+        function addToBatch() {
+            const product = document.getElementById('product-select').value;
+            const quantity = parseFloat(document.getElementById('quantity').value);
+           
+            if (!quantity || quantity <= 0) {
+                alert('Primero calcula una fórmula válida');
+                return;
+            }
+
+            const formula = formulas[product];
+            const batch = {
+                product: formula.name,
+                quantity: quantity,
+                cost: quantity * formula.cost,
+                date: new Date().toLocaleDateString(),
+                components: {}
+            };
+
+            // Calcular componentes utilizados
+            for (const [component, percentage] of Object.entries(formula.components)) {
+                batch.components[component] = quantity * percentage;
+            }
+
+            productionHistory.push(batch);
+            updateStats();
+           
+            alert(`✅ Lote agregado: ${quantity}L de ${formula.name}\n💰 Costo: $${(quantity * formula.cost).toFixed(2)}`);
+        }
+
+        function updateInventory() {
+            const display = document.getElementById('inventory-display');
+            let html = '';
+           
+            for (const [item, data] of Object.entries(inventory)) {
+                let statusClass = 'inventory-item';
+                let statusText = '✅ OK';
+               
+                if (data.stock <= data.min) {
+                    statusClass += ' critical';
+                    statusText = '🚨 CRÍTICO';
+                } else if (data.stock <= data.min * 2) {
+                    statusClass += ' low';
+                    statusText = '⚠️ BAJO';
+                }
+               
+                html += `
+                    <div class="${statusClass}">
+                        <strong>${item}</strong><br>
+                        Stock: ${data.stock} ${data.unit}<br>
+                        <small>${statusText}</small>
+                    </div>
+                `;
+            }
+           
+            display.innerHTML = html;
+        }
+
+        function showTrivia(player) {
+            const questions = triviaQuestions[player];
+            const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+           
+            let optionsHTML = '';
+            randomQuestion.options.forEach((option, index) => {
+                optionsHTML += `<button class="trivia-button" onclick="answerTrivia(${index}, ${randomQuestion.correct}, '${randomQuestion.explanation}', '${player}')" style="display: block; margin: 10px auto;">${option}</button>`;
+            });
+
+            document.getElementById('trivia-question-area').innerHTML = `
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3>${randomQuestion.question}</h3>
+                    <div style="margin: 20px 0;">${optionsHTML}</div>
+                </div>
+            `;
+        }
+
+        function answerTrivia(selected, correct, explanation, player) {
+            const isCorrect = selected === correct;
+           
+            if (isCorrect) {
+                familyScores[player] += (player === 'dad' ? 10 : player === 'mom' ? 8 : 5);
+                updateScores();
+            }
+
+            document.getElementById('trivia-question-area').innerHTML = `
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center;">
+                    <h3>${isCorrect ? '🎉 ¡CORRECTO!' : '❌ Incorrecto'}</h3>
+                    <p style="margin: 15px 0;">${explanation}</p>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">
+                        ${isCorrect ? `+${player === 'dad' ? 10 : player === 'mom' ? 8 : 5} puntos!` : 'Sigue aprendiendo!'}
+                    </p>
+                    <button class="trivia-button" onclick="startTrivia()" style="margin-top: 15px;">Nueva Pregunta</button>
+                </div>
+            `;
+        }
+
+        function startTrivia() {
+            document.getElementById('trivia-question-area').innerHTML = `
+                <p style="text-align: center; font-style: italic;">¡Selecciona quién va a responder para comenzar la diversión química!</p>
+            `;
+        }
+
+        function updateScores() {
+            document.getElementById('dad-score').textContent = familyScores.dad;
+            document.getElementById('mom-score').textContent = familyScores.mom;
+            document.getElementById('son-score').textContent = familyScores.son;
+            document.getElementById('daughter-score').textContent = familyScores.daughter;
+        }
+
+        function updateStats() {
+            document.getElementById('total-batches').textContent = productionHistory.length;
+           
+            const productCounts = {};
+            productionHistory.forEach(item => {
+                productCounts[item.product] = (productCounts[item.product] || 0) + 1;
+            });
+           
+            const favorite = Object.keys(productCounts).reduce((a, b) =>
+                productCounts[a] > productCounts[b] ? a : b, 'Ninguno aún');
+           
+            document.getElementById('favorite-products').textContent = favorite;
+           
+            const totalSaved = productionHistory.reduce((sum, item) => sum + (item.cost * 2), 0);
+            document.getElementById('savings').textContent = `$${totalSaved.toFixed(2)}`;
+        }
+
+        // INICIALIZACIÓN
+        window.onload = function() {
+            updateInventory();
+            updateScores();
+            updateStats();
+        };
+    </script>
+</body>
+</html>
